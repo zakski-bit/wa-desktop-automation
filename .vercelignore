@@ -1,0 +1,14 @@
+# Vercel Ignore - Mencegah file python dan data pribadi di-build oleh Vercel
+*.csv
+*.xlsx
+*.xls
+*.json
+!vercel.json
+*.docx
+*.log
+sent_log.csv
+__pycache__/
+extracted_*.txt
+*.py
+jalankan_bot.bat
+requirements.txt
