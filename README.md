@@ -1,5 +1,15 @@
 # 📱 WhatsApp Desktop Automation Sender
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Interactive%20Simulator-10B981?style=for-the-badge&logo=vercel&logoColor=white)](https://zakski-bit.github.io/wa-desktop-automation/)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/zakski-bit/wa-desktop-automation)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
+> 🌐 **Coba Live Demo Interaktif di Browser:**  
+> 👉 **[https://zakski-bit.github.io/wa-desktop-automation/](https://zakski-bit.github.io/wa-desktop-automation/)**  
+> *(Cocok dicantumkan di CV / Portfolio LinkedIn Anda!)*
+
+---
+
 Script otomasi berbasis Python untuk mengirimkan pesan WhatsApp secara terpersonalisasi melalui aplikasi **WhatsApp Desktop (Windows)** dengan jeda aman (*rate-limiting*), penanganan jendela otomatis, dan integrasi data CSV/Excel.
 
 > [!NOTE]

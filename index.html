@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Automation Simulator | Portfolio Showcase by Zaki</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['Fira Code', 'monospace']
+          },
+          colors: {
+            wa: {
+              green: '#25D366',
+              teal: '#128C7E',
+              dark: '#075E54',
+              light: '#DCF8C6',
+              bg: '#EFEAE2',
+              darkbg: '#111B21',
+              chatbg: '#0B141A',
+              bubbleMe: '#005C4B',
+              bubbleThem: '#202C33'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.4); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(156, 163, 175, 0.6); }
+    .wa-bg-pattern {
+      background-color: #0b141a;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- TOP NAVBAR -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-white font-bold">
+          <i data-lucide="message-square-code" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-base sm:text-lg tracking-tight text-white">WA Desktop Automation</h1>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono font-medium">Live Simulator</span>
+          </div>
+          <p class="text-xs text-slate-400">Interactive Project Showcase & Portfolio by <span class="text-emerald-400 font-medium">Zaki</span></p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="https://github.com/zakski-bit/wa-desktop-automation" target="_blank" rel="noopener noreferrer" 
+           class="inline-flex items-center gap-2 text-xs sm:text-sm font-medium px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 transition shadow-sm">
+          <i data-lucide="github" class="w-4 h-4"></i>
+          <span>View on GitHub</span>
+          <i data-lucide="external-link" class="w-3.5 h-3.5 text-slate-400"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- METRICS RIBBON -->
+  <section class="bg-slate-900/50 border-b border-slate-800 py-3 px-4">
+    <div class="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+      <div class="border-r border-slate-800/80 last:border-none">
+        <div class="text-xs text-slate-400">Total Contacts</div>
+        <div id="statTotal" class="text-lg font-bold text-white font-mono mt-0.5">5</div>
+      </div>
+      <div class="border-r border-slate-800/80 last:border-none">
+        <div class="text-xs text-slate-400">Simulated Sent</div>
+        <div id="statSent" class="text-lg font-bold text-emerald-400 font-mono mt-0.5">0</div>
+      </div>
+      <div class="border-r border-slate-800/80 last:border-none">
+        <div class="text-xs text-slate-400">Anti-Spam Engine</div>
+        <div class="text-xs font-semibold text-teal-400 mt-1 flex items-center justify-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Win32 Hardware Hook</span>
+        </div>
+      </div>
+      <div>
+        <div class="text-xs text-slate-400">Success Rate</div>
+        <div id="statRate" class="text-lg font-bold text-sky-400 font-mono mt-0.5">100%</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN DUAL-PANE WORKSPACE -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- LEFT PANEL: CONTROLLER & CONFIGURATION (5 Cols) -->
+    <div class="lg:col-span-5 flex flex-col gap-5">
+
+      <!-- CONTROL CARD -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <i data-lucide="sliders" class="w-5 h-5 text-emerald-400"></i>
+            <h2 class="font-semibold text-sm sm:text-base text-white">Automation Controls</h2>
+          </div>
+          <span id="engineStatus" class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 font-mono">Idle</span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <button id="btnStart" onclick="startSimulation()" class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-medium text-sm transition shadow-lg shadow-emerald-500/20 active:scale-[0.98]">
+            <i data-lucide="play" class="w-4 h-4 fill-white"></i>
+            <span>Mulai Simulasi</span>
+          </button>
+          <button id="btnReset" onclick="resetSimulation()" class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-medium text-sm border border-slate-700 transition active:scale-[0.98]">
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+            <span>Reset Demo</span>
+          </button>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="space-y-1.5 mb-4">
+          <div class="flex justify-between text-xs text-slate-400">
+            <span>Progress Batch</span>
+            <span id="progressText" class="font-mono">0 / 5 (0%)</span>
+          </div>
+          <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+            <div id="progressBar" class="h-full bg-emerald-500 transition-all duration-300 w-0"></div>
+          </div>
+        </div>
+
+        <!-- Cooldown / Anti-spam setting -->
+        <div class="border-t border-slate-800/80 pt-3">
+          <div class="flex items-center justify-between text-xs mb-1.5">
+            <span class="text-slate-300 flex items-center gap-1.5">
+              <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400"></i>
+              Simulated Cooldown Delay:
+            </span>
+            <span id="delayDisplay" class="font-mono text-emerald-400 font-semibold">3.0 detik</span>
+          </div>
+          <input type="range" id="delaySlider" min="1.5" max="6" step="0.5" value="3" oninput="updateDelay(this.value)"
+                 class="w-full accent-emerald-500 h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+          <div class="flex justify-between text-[10px] text-slate-500 mt-1">
+            <span>Fast (1.5s)</span>
+            <span>Real Production Mode (15-25s)</span>
+            <span>Slow (6s)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEMPLATE EDITOR CARD -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl flex-1 flex flex-col">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <i data-lucide="file-text" class="w-5 h-5 text-teal-400"></i>
+            <h2 class="font-semibold text-sm sm:text-base text-white">Dynamic Message Template</h2>
+          </div>
+          <button onclick="restoreDefaultTemplate()" class="text-xs text-slate-400 hover:text-emerald-400 transition flex items-center gap-1">
+            <i data-lucide="undo" class="w-3 h-3"></i>
+            <span>Default</span>
+          </button>
+        </div>
+
+        <p class="text-xs text-slate-400 mb-2">
+          Ketik pesan Anda. Gunakan variabel dinamis: <code class="text-emerald-400 bg-emerald-950/60 px-1 py-0.5 rounded">{panggilan}</code>, <code class="text-emerald-400 bg-emerald-950/60 px-1 py-0.5 rounded">{nama}</code>, <code class="text-emerald-400 bg-emerald-950/60 px-1 py-0.5 rounded">{gugus}</code>, <code class="text-emerald-400 bg-emerald-950/60 px-1 py-0.5 rounded">{prodi}</code>.
+        </p>
+
+        <textarea id="templateEditor" rows="6" oninput="handleTemplateChange()"
+                  class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-emerald-500 transition font-sans leading-relaxed resize-none"></textarea>
+
+        <!-- Variable badges -->
+        <div class="flex flex-wrap gap-1.5 mt-3">
+          <button onclick="insertVariable('{panggilan}')" class="text-[11px] px-2 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-mono transition border border-slate-700">+ {panggilan}</button>
+          <button onclick="insertVariable('{nama}')" class="text-[11px] px-2 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-mono transition border border-slate-700">+ {nama}</button>
+          <button onclick="insertVariable('{gugus}')" class="text-[11px] px-2 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-mono transition border border-slate-700">+ {gugus}</button>
+          <button onclick="insertVariable('{jurusan}')" class="text-[11px] px-2 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-mono transition border border-slate-700">+ {jurusan}</button>
+          <button onclick="insertVariable('{prodi}')" class="text-[11px] px-2 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-mono transition border border-slate-700">+ {prodi}</button>
+        </div>
+      </div>
+
+      <!-- CONTACTS PREVIEW TABLE -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <i data-lucide="users" class="w-5 h-5 text-sky-400"></i>
+            <h2 class="font-semibold text-sm sm:text-base text-white">Target Contacts Queue</h2>
+          </div>
+          <span class="text-xs text-slate-400 font-mono">5 Contacts Loaded</span>
+        </div>
+
+        <div class="overflow-hidden rounded-xl border border-slate-800">
+          <div class="max-h-48 overflow-y-auto divide-y divide-slate-800/80 bg-slate-950/60" id="contactsList">
+            <!-- Dynamic contacts will be rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT PANEL: WHATSAPP MOCKUP & LIVE LOGS (7 Cols) -->
+    <div class="lg:col-span-7 flex flex-col gap-5">
+
+      <!-- MOCKUP WHATSAPP DESKTOP WINDOW -->
+      <div class="bg-[#111B21] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[470px]">
+        <!-- WA Window Titlebar -->
+        <div class="bg-[#202C33] px-4 py-2.5 border-b border-[#2A3942] flex items-center justify-between select-none">
+          <div class="flex items-center gap-3">
+            <div class="relative">
+              <div id="activeAvatar" class="w-9 h-9 rounded-full bg-emerald-700 text-white font-semibold flex items-center justify-center text-sm shadow">
+                BS
+              </div>
+              <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-[#202C33]"></span>
+            </div>
+            <div>
+              <div id="activeName" class="text-sm font-semibold text-slate-100 leading-tight">Ahmad Budi Santoso</div>
+              <div id="activeStatus" class="text-[11px] text-emerald-400 font-normal">Online (Gugus 1 • D4 Teknik Informatika)</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4 text-slate-400">
+            <i data-lucide="video" class="w-4 h-4 cursor-pointer hover:text-slate-200 transition"></i>
+            <i data-lucide="phone" class="w-4 h-4 cursor-pointer hover:text-slate-200 transition"></i>
+            <span class="w-[1px] h-4 bg-slate-700"></span>
+            <i data-lucide="search" class="w-4 h-4 cursor-pointer hover:text-slate-200 transition"></i>
+            <i data-lucide="more-vertical" class="w-4 h-4 cursor-pointer hover:text-slate-200 transition"></i>
+          </div>
+        </div>
+
+        <!-- WA Chat Body (Pattern) -->
+        <div class="flex-1 wa-bg-pattern p-4 overflow-y-auto flex flex-col justify-end space-y-3" id="chatArea">
+          <div class="flex justify-center">
+            <span class="text-[11px] bg-[#182229] text-slate-400 px-3 py-1 rounded-lg border border-[#222E35] font-medium shadow-sm">
+              Today • End-to-end encrypted
+            </span>
+          </div>
+
+          <!-- Incoming mock message (intro) -->
+          <div class="flex justify-start">
+            <div class="bg-wa-bubbleThem text-slate-200 rounded-2xl rounded-tl-none px-3.5 py-2 max-w-[80%] text-xs shadow-md border border-slate-700/40">
+              <div class="text-[10px] text-emerald-400 font-semibold mb-0.5">Calon Mentee</div>
+              <p>Halo Kak! Saya kemarin sempat isi form pendaftaran mentoring PNJ Cool 2026.</p>
+              <div class="text-[9px] text-slate-400 text-right mt-1">10:14</div>
+            </div>
+          </div>
+
+          <!-- Outgoing automated bubble -->
+          <div class="flex justify-end" id="outgoingWrapper">
+            <div id="outgoingBubble" class="bg-wa-bubbleMe text-slate-100 rounded-2xl rounded-tr-none px-3.5 py-2.5 max-w-[85%] text-xs shadow-md border border-emerald-600/30 transition-all duration-300">
+              <p id="previewText" class="whitespace-pre-line leading-relaxed">
+                Loading preview message...
+              </p>
+              <div class="flex items-center justify-end gap-1 text-[9px] text-emerald-200/70 mt-1.5 font-mono">
+                <span id="bubbleTime">10:15</span>
+                <span id="bubbleTicks" class="text-sky-400">✓✓</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Typing indicator (hidden by default) -->
+          <div id="typingIndicator" class="hidden flex items-center gap-2 text-xs text-slate-400 bg-[#182229] w-fit px-3 py-1.5 rounded-full border border-slate-800">
+            <div class="flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce [animation-delay:0.2s]"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce [animation-delay:0.4s]"></span>
+            </div>
+            <span class="text-[11px] font-mono text-emerald-400">Automating keystroke via Win32 hardware event...</span>
+          </div>
+        </div>
+
+        <!-- WA Input Footer -->
+        <div class="bg-[#202C33] px-3 py-2 border-t border-[#2A3942] flex items-center gap-2.5">
+          <i data-lucide="smile" class="w-5 h-5 text-slate-400 cursor-pointer hover:text-slate-300 transition"></i>
+          <i data-lucide="paperclip" class="w-5 h-5 text-slate-400 cursor-pointer hover:text-slate-300 transition"></i>
+          <div class="flex-1 bg-[#2A3942] rounded-xl px-3.5 py-2 text-xs text-slate-300 truncate font-mono">
+            <span id="inputFieldMock" class="text-slate-400">Message pre-filled via protocol URI...</span>
+          </div>
+          <button class="w-8 h-8 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center transition shadow">
+            <i data-lucide="send" class="w-4 h-4 fill-white"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- LIVE TERMINAL CONSOLE LOG (Win32 API & Event Stream) -->
+      <div class="bg-black/90 border border-slate-800 rounded-2xl p-4 shadow-xl font-mono text-xs flex flex-col h-[260px]">
+        <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 text-slate-400">
+          <div class="flex items-center gap-2">
+            <div class="flex gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-500/80"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></span>
+            </div>
+            <span class="text-xs text-slate-300 font-medium">Terminal Console • Win32 Event Stream</span>
+          </div>
+          <button onclick="clearLogs()" class="hover:text-slate-200 transition text-[11px] flex items-center gap-1">
+            <i data-lucide="trash-2" class="w-3 h-3"></i>
+            <span>Clear</span>
+          </button>
+        </div>
+
+        <div id="consoleLog" class="flex-1 overflow-y-auto space-y-1.5 text-[11px] leading-relaxed text-slate-300">
+          <div class="text-slate-500">[SYSTEM] Core initialized. Win32 User32.dll loaded. Ready for execution.</div>
+          <div class="text-slate-500">[INFO] Loaded 5 sample contacts from kontak_sample.csv.</div>
+          <div class="text-slate-500">[READY] Click "Mulai Simulasi" to execute live demonstration.</div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-900 bg-slate-950 py-6 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <span>© 2026 <strong>WA Desktop Automation</strong></span>
+        <span>•</span>
+        <span>Designed for Campus Mentoring & Event Outreach</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://github.com/zakski-bit/wa-desktop-automation" target="_blank" class="hover:text-emerald-400 transition">GitHub Repo</a>
+        <span>•</span>
+        <a href="https://github.com/zakski-bit/wa-desktop-automation/blob/main/LICENSE" target="_blank" class="hover:text-emerald-400 transition">MIT License</a>
+        <span>•</span>
+        <span class="text-slate-400 font-mono">Status: Production Verified</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Default Contacts Dataset
+    const initialContacts = [
+      { id: 1, nama: "Ahmad Budi Santoso", panggilan: "Budi", gugus: "Gugus 1", jurusan: "Teknik Informatika", prodi: "D4 Teknik Informatika", phone: "6281234567890", status: "pending" },
+      { id: 2, nama: "Muhammad Dimas Pratama", panggilan: "Dimas", gugus: "Gugus 5", jurusan: "Teknik Mesin", prodi: "D3 Teknik Mesin", phone: "6281987654321", status: "pending" },
+      { id: 3, nama: "Rian Hidayatullah", panggilan: "Rian", gugus: "Gugus 12", jurusan: "Teknik Elektro", prodi: "D4 Teknik Otomasi Listrik", phone: "6285712345678", status: "pending" },
+      { id: 4, nama: "Fauzan Alamsyah", panggilan: "Fauzan", gugus: "Gugus 18", jurusan: "Administrasi Niaga", prodi: "D4 Administrasi Bisnis Terapan", phone: "6288212345678", status: "pending" },
+      { id: 5, nama: "Muhammad Alif Hertanto", panggilan: "Alif", gugus: "Gugus 27", jurusan: "Akuntansi", prodi: "D4 Keuangan dan Perbankan", phone: "6281221904746", status: "pending" }
+    ];
+
+    let contacts = JSON.parse(JSON.stringify(initialContacts));
+    let activeContactIndex = 0;
+    let isRunning = false;
+    let cooldownDelay = 3000; // in ms
+
+    const defaultTemplate = `Assalamualaikum, halo {panggilan}, mohon maaf mengganggu waktunya. Perkenalkan nama saya Zaki dari panitia bimbingan rohani PNJ Cool 2026. Saya kebetulan bertugas waktu PKKP kemarin ketika waktu dzuhur nih. Saya tahu nomor kamu dari Gform yang sudah diisi.
+
+Sebelumnya, bagaimana nih kabarnya setelah PKKP? sudah 3 minggu berkuliah di {jurusan} pasti sudah lebih paham lingkungan PNJ nih yaa`;
+
+    // Elements
+    const templateEditor = document.getElementById("templateEditor");
+    const previewText = document.getElementById("previewText");
+    const contactsListEl = document.getElementById("contactsList");
+    const consoleLog = document.getElementById("consoleLog");
+    const activeName = document.getElementById("activeName");
+    const activeStatus = document.getElementById("activeStatus");
+    const activeAvatar = document.getElementById("activeAvatar");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    const statSent = document.getElementById("statSent");
+    const engineStatus = document.getElementById("engineStatus");
+    const typingIndicator = document.getElementById("typingIndicator");
+
+    templateEditor.value = defaultTemplate;
+
+    // Helper: Format message
+    function renderMessage(template, c) {
+      return template
+        .replace(/{panggilan}/g, c.panggilan || "Kak")
+        .replace(/{nama}/g, c.nama || "Teman")
+        .replace(/{gugus}/g, c.gugus || "PNJ")
+        .replace(/{jurusan}/g, c.jurusan || "Jurusan")
+        .replace(/{prodi}/g, c.prodi || "Prodi");
+    }
+
+    // Render Contact List
+    function renderContactsList() {
+      contactsListEl.innerHTML = contacts.map((c, idx) => {
+        const isSelected = idx === activeContactIndex;
+        let badgeColor = "bg-slate-800 text-slate-400";
+        let statusIcon = "clock";
+        if (c.status === "sent") {
+          badgeColor = "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+          statusIcon = "check-check";
+        } else if (c.status === "processing") {
+          badgeColor = "bg-amber-500/20 text-amber-300 border border-amber-500/30 animate-pulse";
+          statusIcon = "loader-2";
+        }
+
+        return `
+          <div onclick="selectContact(${idx})" 
+               class="px-3.5 py-2.5 flex items-center justify-between cursor-pointer transition ${isSelected ? 'bg-slate-800/80 border-l-4 border-emerald-500' : 'hover:bg-slate-900/60'}">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-7 h-7 rounded-full bg-slate-800 text-slate-200 text-xs font-semibold flex items-center justify-center flex-shrink-0">
+                ${c.panggilan.slice(0, 2).toUpperCase()}
+              </div>
+              <div class="truncate">
+                <div class="text-xs font-medium text-slate-200 truncate">${c.nama}</div>
+                <div class="text-[10px] text-slate-400">${c.gugus} • ${c.phone}</div>
+              </div>
+            </div>
+            <span class="text-[10px] px-2 py-0.5 rounded-full font-mono flex items-center gap-1 flex-shrink-0 ${badgeColor}">
+              ${c.status === 'sent' ? 'Terkirim' : (c.status === 'processing' ? 'Proses...' : 'Antre')}
+            </span>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    // Select Active Contact for Preview
+    function selectContact(idx) {
+      if (isRunning) return;
+      activeContactIndex = idx;
+      updateActiveContactView();
+      renderContactsList();
+    }
+
+    function updateActiveContactView() {
+      const c = contacts[activeContactIndex];
+      activeName.textContent = c.nama;
+      activeStatus.textContent = `Online (${c.gugus} • ${c.prodi})`;
+      activeAvatar.textContent = c.panggilan.slice(0, 2).toUpperCase();
+      
+      const formatted = renderMessage(templateEditor.value, c);
+      previewText.textContent = formatted;
+      
+      const now = new Date();
+      document.getElementById("bubbleTime").textContent = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    }
+
+    // Template Input Event
+    function handleTemplateChange() {
+      updateActiveContactView();
+    }
+
+    function restoreDefaultTemplate() {
+      templateEditor.value = defaultTemplate;
+      updateActiveContactView();
+      logEvent("RESTORE", "Message template restored to default.");
+    }
+
+    function insertVariable(v) {
+      const start = templateEditor.selectionStart;
+      const end = templateEditor.selectionEnd;
+      const val = templateEditor.value;
+      templateEditor.value = val.substring(0, start) + v + val.substring(end);
+      templateEditor.focus();
+      templateEditor.selectionStart = templateEditor.selectionEnd = start + v.length;
+      updateActiveContactView();
+    }
+
+    function updateDelay(val) {
+      cooldownDelay = parseFloat(val) * 1000;
+      document.getElementById("delayDisplay").textContent = `${parseFloat(val).toFixed(1)} detik`;
+    }
+
+    // Logging helper
+    function logEvent(type, msg, color = "text-slate-300") {
+      const now = new Date();
+      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+      
+      let badge = `<span class="text-slate-500 font-mono">[${timeStr}]</span> `;
+      if (type === "INFO") badge += `<span class="text-sky-400 font-semibold">[INFO]</span> `;
+      else if (type === "ACTION") badge += `<span class="text-amber-400 font-semibold">[ACTION]</span> `;
+      else if (type === "SUCCESS") badge += `<span class="text-emerald-400 font-semibold">[SUCCESS]</span> `;
+      else if (type === "WIN32") badge += `<span class="text-purple-400 font-semibold">[WIN32]</span> `;
+      else if (type === "COOLDOWN") badge += `<span class="text-teal-400 font-semibold">[COOLDOWN]</span> `;
+      else badge += `<span class="text-slate-400 font-semibold">[${type}]</span> `;
+
+      const el = document.createElement("div");
+      el.className = color;
+      el.innerHTML = `${badge} ${msg}`;
+      consoleLog.appendChild(el);
+      consoleLog.scrollTop = consoleLog.scrollHeight;
+    }
+
+    function clearLogs() {
+      consoleLog.innerHTML = `<div class="text-slate-500">[SYSTEM] Logs cleared. Console ready.</div>`;
+    }
+
+    // SIMULATION ENGINE
+    async function startSimulation() {
+      if (isRunning) return;
+      isRunning = true;
+      document.getElementById("btnStart").disabled = true;
+      document.getElementById("btnStart").classList.add("opacity-50", "cursor-not-allowed");
+      engineStatus.textContent = "Running";
+      engineStatus.className = "text-xs px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-mono animate-pulse";
+
+      logEvent("INFO", `Memulai batch otomasi untuk ${contacts.length} kontak...`);
+
+      let sentCount = 0;
+
+      for (let i = 0; i < contacts.length; i++) {
+        activeContactIndex = i;
+        const c = contacts[i];
+        c.status = "processing";
+        renderContactsList();
+        updateActiveContactView();
+
+        logEvent("ACTION", `[${i+1}/${contacts.length}] Membaca target: ${c.nama} (${c.phone})`);
+        await sleep(500);
+
+        // Normalize phone simulation
+        logEvent("INFO", `Normalisasi format nomor telepon: ${c.phone} -> Standard E.164 (62)`);
+        await sleep(400);
+
+        // Protocol invocation
+        const encoded = encodeURIComponent(renderMessage(templateEditor.value, c)).slice(0, 30) + "...";
+        logEvent("ACTION", `ShellExecute: whatsapp://send?phone=${c.phone}&text=${encoded}`);
+        
+        // Show typing indicator
+        typingIndicator.classList.remove("hidden");
+        await sleep(800);
+
+        // Win32 HW focus
+        logEvent("WIN32", `EnumWindows: Handle WhatsApp.Root ditemukan. SetForegroundWindow() OK.`);
+        await sleep(500);
+
+        // Hardware ScanCode
+        logEvent("WIN32", `user32.keybd_event(VK_RETURN=0x0D, SCAN_CODE=0x1C, KEYEVENTF_KEYDOWN)`);
+        await sleep(200);
+
+        // Message Sent
+        typingIndicator.classList.add("hidden");
+        c.status = "sent";
+        sentCount++;
+        renderContactsList();
+
+        logEvent("SUCCESS", `Pesan terkirim ke ${c.panggilan}! Log ditambahkan ke sent_log.csv`);
+        
+        // Update stats
+        statSent.textContent = sentCount;
+        const pct = Math.round((sentCount / contacts.length) * 100);
+        progressBar.style.width = `${pct}%`;
+        progressText.textContent = `${sentCount} / ${contacts.length} (${pct}%)`;
+
+        // If not last, cooldown delay
+        if (i < contacts.length - 1) {
+          const delaySec = (cooldownDelay / 1000).toFixed(1);
+          logEvent("COOLDOWN", `Menunggu jeda anti-spam ${delaySec} detik sebelum kontak berikutnya...`, "text-amber-300");
+          await sleep(cooldownDelay);
+        }
+      }
+
+      logEvent("SUCCESS", `🎉 Batch pengiriman selesai! Total ${sentCount} pesan terkirim 100% sukses.`, "text-emerald-300 font-bold");
+      
+      isRunning = false;
+      document.getElementById("btnStart").disabled = false;
+      document.getElementById("btnStart").classList.remove("opacity-50", "cursor-not-allowed");
+      engineStatus.textContent = "Finished";
+      engineStatus.className = "text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 font-mono";
+    }
+
+    function resetSimulation() {
+      if (isRunning) return;
+      contacts = JSON.parse(JSON.stringify(initialContacts));
+      activeContactIndex = 0;
+      statSent.textContent = "0";
+      progressBar.style.width = "0%";
+      progressText.textContent = "0 / 5 (0%)";
+      engineStatus.textContent = "Idle";
+      engineStatus.className = "text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 font-mono";
+      renderContactsList();
+      updateActiveContactView();
+      logEvent("SYSTEM", "Simulasi di-reset ke kondisi awal.");
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Initial render
+    renderContactsList();
+    updateActiveContactView();
+  </script>
+</body>
+</html>
