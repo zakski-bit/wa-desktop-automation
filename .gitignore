@@ -1,0 +1,31 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Data rahasia / Kontak mahasiswa asli (JANGAN DI-COMMIT)
+*.csv
+!kontak_sample.csv
+*.xlsx
+*.xls
+*.json
+!package*.json
+*.txt
+!template_pesan.txt
+!requirements.txt
+
+# File dokumen & ekstrak lokal
+*.docx
+*.pdf
+extracted_*.txt
+
+# Logs
+*.log
+sent_log.csv
+
+# Environments
+.env
+venv/
+env/
+.vscode/
+.idea/
