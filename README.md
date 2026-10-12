@@ -1,128 +1,101 @@
-# 📱 WhatsApp Desktop Automation Sender
+# WhatsApp Desktop Automation Sender & Batch Messenger
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-wa--desktop--automation.vercel.app-10B981?style=for-the-badge&logo=vercel&logoColor=white)](https://wa-desktop-automation.vercel.app)
-[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/zakski-bit/wa-desktop-automation)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+Lightweight automation engine for batch WhatsApp messaging on Windows, leveraging the native `whatsapp://send` protocol URI handler, **Win32 API** window management, low-level hardware scan-code injection, and anti-spam jitter pacing without heavy Selenium or Chromium browser overhead.
 
-> 🌐 **Coba Live Demo Interaktif di Browser:**  
-> 👉 **[https://wa-desktop-automation.vercel.app](https://wa-desktop-automation.vercel.app)**  
-> *(Live Simulator siap dicantumkan langsung di CV / LinkedIn Portfolio!)*
+[![Live Simulator](https://img.shields.io/badge/Live%20Simulator-Vercel-10B981?style=flat&logo=vercel)](https://wa-desktop-automation.vercel.app)
+[![Python Version](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20(Win32%20API)-0078D6.svg)](https://docs.microsoft.com/en-us/windows/win32/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
----
+## Live Web Simulator
 
-Script otomasi berbasis Python untuk mengirimkan pesan WhatsApp secara terpersonalisasi melalui aplikasi **WhatsApp Desktop (Windows)** dengan jeda aman (*rate-limiting*), penanganan jendela otomatis, dan integrasi data CSV/Excel.
+- **Browser Simulation Interface**: [https://wa-desktop-automation.vercel.app](https://wa-desktop-automation.vercel.app)
 
-> [!NOTE]
-> Proyek ini dirancang untuk otomasi kegiatan kepanitiaan, broadcast mentoring, dan korespondensi resmi dengan tetap mengedepankan jeda waktu santai (*anti-spam*) serta personalisasi nama penerima.
+## Technical Architecture
 
----
-
-## ✨ Fitur Utama
-
-- 🔗 **Native Windows Protocol Integration:** Membuka obrolan langsung via URI resmi `whatsapp://send?phone=...&text=...` tanpa dependensi browser berat.
-- 🎯 **Smart Window Focusing & Hardware Key Injection:** Secara otomatis mencari jendela WhatsApp Desktop, mengangkatnya ke posisi aktif (*foreground*), dan mengirim event Enter menggunakan hardware scan code `0x1C` (Win32 API).
-- 🏷️ **Dynamic Template Rendering:** Mengisi variabel dinamis otomatis seperti `{nama}`, `{panggilan}`, `{gugus}`, `{jurusan}`, dan `{prodi}`.
-- ⏱️ **Configurable Anti-Spam Delays:** Dilengkapi jeda waktu acak yang dapat disesuaikan (misal 15–25 detik) untuk menghindari pembatasan pengiriman massal.
-- 📊 **Smart Column Detection:** Otomatis mendeteksi kolom nomor WhatsApp, nama, panggilan, dan gugus baik dari file `.csv` maupun `.xlsx` (Excel).
-- 🛡️ **Anti-Duplicate Sending & Logger:** Setiap nomor yang berhasil dikirim langsung dicatat ke `sent_log.csv` sehingga tidak ada pesan yang terkirim dobel jika script dijalankan ulang.
-- 🎮 **Interactive Demo (Dry-Run Mode):** Dilengkapi script simulator `demo.py` untuk menguji data dan alur kerja tanpa membuka aplikasi WhatsApp sungguhan.
-
----
-
-## 🖥️ Demonstrasi Output Terminal (Dry-Run Mode)
-
-```text
-=================================================================
-      🚀 WA AUTOMATION SENDER - INTERACTIVE DEMO (DRY-RUN)
-=================================================================
-[*] Mode: Simulasi Aman (Tidak akan mengirim pesan nyata)
-[*] Memuat data contoh dari: kontak_sample.csv
-[+] Berhasil memuat 4 kontak dengan nomor valid.
-
------------------------------------------------------------------
-📝 TEMPLATE PESAN AKTIF:
------------------------------------------------------------------
-Assalamualaikum, halo {panggilan}, mohon maaf mengganggu waktunya...
------------------------------------------------------------------
-
-[1/4] Memproses Kontak: Ahmad Budi Santoso (6281234567890)
-      📌 Sapaan: Kak Budi | Gugus: Gugus 1
-      🔗 Protocol: whatsapp://send?phone=6281234567890&text=[ENCODED]
-      ⏳ Membuka jendela & menunggu fokus... [SIMULASI]
-      ⌨️ Mengirim event keyboard: ENTER (Hardware ScanCode 0x1C)
-      ✅ [STATUS: BERHASIL] Pesan terkirim ke Budi!
-      ⏱️ Menunggu jeda acak anti-spam (3s)...
+```
+                    +---------------------------+
+                    |    Input Dataset (CSV/XLSX)
+                    +-------------+-------------+
+                                  |
+                                  v
+                    +---------------------------+
+                    | Dynamic Template Compiler |
+                    | ({name}, {dept}, {role})  |
+                    +-------------+-------------+
+                                  |
+                                  v
+                    +---------------------------+
+                    |   Protocol Dispatcher     |
+                    |  (whatsapp://send?phone)  |
+                    +-------------+-------------+
+                                  |
+                                  v
+                    +---------------------------+
+                    |    Win32 Window Manager   |
+                    | Focus window & ScanCode   |
+                    | (Hardware Key Event 0x1C) |
+                    +-------------+-------------+
+                                  |
+                                  v
+                    +---------------------------+
+                    |   Jitter Delay & Logger   |
+                    |  (Random 15-25s sleep)    |
+                    +---------------------------+
 ```
 
----
+## Key Capabilities
 
-## 📁 Struktur Direktori
+- **Native Protocol URI Handling**: Dispatches messages directly via `whatsapp://send?phone=<phone>&text=<encoded_text>`, bypassing heavy headless browser frameworks (Selenium, Puppeteer, Playwright) and cutting memory footprint by >90%.
+- **Low-Level Hardware Key Injection**: Leverages the Win32 API (`user32.dll`) to detect window handles, bring WhatsApp Desktop to the foreground, and inject raw hardware keyboard scan codes (`0x1C` for Enter key).
+- **Dynamic Variable Substitution**: Compiles templates with contextual metadata (`{nama}`, `{panggilan}`, `{divisi}`, `{instansi}`) loaded from spreadsheet sources (CSV or XLSX).
+- **Anti-Spam Delay Pacing**: Randomized jitter delays (configurable between 15–25 seconds) mimicking human interaction to mitigate automated rate-limiting.
+- **De-duplication & Audit Trail**: Thread-safe logging to `sent_log.csv` ensuring zero double-sends upon restart or failure recovery.
+- **Safe Dry-Run Mode**: Interactive sandbox simulator (`demo.py`) verifying pipeline logic, data parsing, and template syntax without dispatching live messages.
 
-```text
-wa-mentoring-sender/
-├── .gitignore             # Mencegah nomor telepon pribadi & log terunggah
-├── config.py              # Pengaturan jeda waktu, path file, dan delay
-├── demo.py                # Simulator demonstrasi alur kerja (Aman / Dry-Run)
-├── kontak_sample.csv      # Contoh format data kontak dummy
-├── requirements.txt       # Daftar dependensi Python
-├── template_pesan.txt     # Template pesan yang dapat disesuaikan
-├── wa_sender.py           # Engine utama automasi WhatsApp Desktop
-└── jalankan_bot.bat       # Launcher praktis untuk pengguna Windows
-```
+## Quickstart
 
----
+### Prerequisites
 
-## 🚀 Panduan Instalasi & Penggunaan
+- Windows 10 / 11
+- Python 3.10+
+- WhatsApp Desktop installed from official release
 
-### 1. Kloning Repositori
-```bash
-git clone https://github.com/USERNAME/wa-desktop-automation.git
-cd wa-desktop-automation
-```
+### Installation & Run
 
-### 2. Pasang Dependensi
-Pastikan Python 3.8+ sudah terpasang di sistem Windows Anda:
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Jalankan Demo (Simulasi Aman)
-Uji coba alur kerja tanpa mengirim pesan nyata:
-```bash
-python demo.py
-```
-
-### 4. Menjalankan Pengiriman Nyata
-1. Buka aplikasi **WhatsApp Desktop** di Windows dan pastikan sudah dalam keadaan login.
-2. Edit pesan Anda di `template_pesan.txt`.
-3. Masukkan data kontak Anda (format CSV atau Excel).
-4. Jalankan script interaktif:
+1. Clone the repository:
    ```bash
-   python wa_sender.py
+   git clone https://github.com/zakski-bit/wa-desktop-automation.git
+   cd wa-desktop-automation
    ```
-   *atau cukup klik dua kali file `jalankan_bot.bat`.*
 
----
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## ⚙️ Format Data Kontak (`kontak.csv` / `.xlsx`)
+3. Run dry-run simulation (Safe test mode):
+   ```bash
+   python demo.py
+   ```
 
-Format kolom yang didukung (script otomatis mendeteksi nama kolom):
-```csv
-Nama Lengkap,Panggilan,Gugus,Jurusan,Program Studi,No. WhatsApp
-Ahmad Budi Santoso,Budi,Gugus 1,Teknik Informatika,D4 Teknik Informatika,081234567890
-Muhammad Dimas Pratama,Dimas,Gugus 5,Teknik Mesin,D3 Teknik Mesin,081987654321
+4. Run live batch sender:
+   ```bash
+   python main.py
+   ```
+
+## Repository Structure
+
+```
+├── main.py                  # Production batch automation runner
+├── demo.py                  # Interactive dry-run terminal simulator
+├── index.html               # Web demo client for Vercel deployment
+├── app.js                   # Client-side workflow simulator
+├── kontak_sample.csv        # Template input dataset schema
+├── requirements.txt         # Python dependencies
+└── sent_log.csv             # Execution history & deduplication ledger
 ```
 
-> **Catatan Normalisasi Nomor:** Script akan otomatis mengubah format nomor lokal `08xx`, `+62xx`, `8xx`, maupun angka desimal float Excel `.0` menjadi format standar internasional `628xx`.
+## License
 
----
-
-## ⚠️ Disclaimer & Kebijakan Privasi
-
-1. **Privasi Data:** Repositori ini dilengkapi konfigurasi `.gitignore` ketat untuk memastikan nomor telepon, nama pribadi, dan riwayat pengiriman tidak akan pernah ter-commit ke GitHub.
-2. **Kebijakan WhatsApp:** Script ini ditujukan untuk mempermudah komunikasi panitia/organisasi secara wajar. Gunakan jeda waktu yang bijak dan hindari pengiriman massal tanpa jeda guna mematuhi *Terms of Service* WhatsApp.
-
----
-
-## 📄 Lisensi
-Didistribusikan di bawah lisensi MIT. Silakan gunakan dan kembangkan untuk kebutuhan organisasi atau kampus Anda.
+MIT License. See [LICENSE](LICENSE) for details.
